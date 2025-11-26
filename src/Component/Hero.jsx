@@ -3,7 +3,7 @@ import { FaArrowRight, FaStethoscope, FaHeartbeat, FaUserMd, FaBaby, FaTooth, Fa
 import { Link } from "react-router-dom";
 import TeamGrid from "./TeamGrid";
 import Contact from "../Pages/Contact";
-import WhyChooseUs from "./Whychoose";
+import WhyChooseUs from "./WhyChoose";
 import WhatWeOffer from "./Services";
 import LatestNews from "./Blog";
 
@@ -109,26 +109,6 @@ const Hero = () => {
       {/* CONTACT SECTION */}
       <Contact />
 
-      {/* ANIMATION STYLES */}
-      <style>{`
-        @keyframes slideImage1 {
-          0% { opacity: 1; }
-          50% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-        @keyframes slideImage2 {
-          0% { opacity: 0; }
-          50% { opacity: 1; }
-          100% { opacity: 0; }
-        }
-        .animate-slideImage1 { animation: slideImage1 16s infinite; }
-        .animate-slideImage2 { animation: slideImage2 16s infinite; }
-        .animate-fadeInUp { animation: fadeInUp 1.2s ease-out; }
-        @keyframes fadeInUp {
-          from { opacity:0; transform:translateY(20px); }
-          to { opacity:1; transform:translateY(0); }
-        }
-      `}</style>
     </div>
   );
 };

@@ -6,7 +6,6 @@ export default function Chat() {
   const [messages, setMessages] = useState([
     { id: 1, sender: "doctor", text: "Hello, how can I assist you today?" },
   ]);
-
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
@@ -23,7 +22,6 @@ export default function Chat() {
       sender: "user",
       text: input,
     };
-
     setMessages([...messages, newMessage]);
     setInput("");
 
@@ -32,7 +30,7 @@ export default function Chat() {
       setMessages((prev) => [
         ...prev,
         {
-          id: prev.length + 1,
+          id: prev.length + 8,
           sender: "doctor",
           text: "Thanks for the message. We’ll get back to you shortly.",
           text: "Thank you for reaching out. How can I help you further?",
