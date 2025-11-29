@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FaPlus, FaRegClock } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa";
 
 export default function LatestNews() {
   const [apiNews, setApiNews] = useState([]);
@@ -87,9 +87,7 @@ export default function LatestNews() {
         )}
 
         {error && (
-          <p className="text-red-500 mt-4">
-            News Loading..
-            </p>
+          <p className="text-red-500 mt-4">.</p>
         )}
       </div>
 

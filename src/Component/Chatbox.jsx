@@ -3,66 +3,80 @@ import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 
 export default function Chat() {
+  const doctorReplies = [
+    "Good Morning! How How are you feeling today?",
+    "I appreciate your patience. Let me check that for you.",
+    "Please provide more details so I can assist you better.",
+    "Is there anything else you would like to know?",
+    "Feel free to ask any questions you may have.",
+    "I'm here to help with any concerns you have.",
+    "Hope the baby is kicking well! Let me know if you need anything else.",
+    "Remember to stay hydrated and take your prenatal vitamins.",
+  ];
+
+  const [replyIndex, setReplyIndex] = useState(0);
   const [messages, setMessages] = useState([
     { id: 1, sender: "doctor", text: "Hello, how can I assist you today?" },
   ]);
+
   const [input, setInput] = useState("");
+  const chatWindowRef = useRef(null);
   const chatEndRef = useRef(null);
 
-  // Scroll 
+  // Smooth scroll to the bottom whenever new message appears
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTo({
+        top: chatWindowRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    const newMessage = {
+    const userMessage = {
       id: messages.length + 1,
       sender: "user",
       text: input,
     };
-    setMessages([...messages, newMessage]);
+
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    // Optional auto-response
+    // Auto reply after 2 sec
     setTimeout(() => {
+      const nextReply = doctorReplies[replyIndex];
+
       setMessages((prev) => [
         ...prev,
-        {
-          id: prev.length + 8,
-          sender: "doctor",
-          text: "Thanks for the message. We’ll get back to you shortly.",
-          text: "Thank you for reaching out. How can I help you further?",
-          text: "I appreciate your patience. Let me check that for you.",
-          text: "Please provide more details so I can assist you better.",
-          text: "Is there anything else you would like to know?",
-          text: "Feel free to ask any questions you may have.",
-          text: "I'm here to help with any concerns you have.",
-          text: "Hope the baby is kicking well! Let me know if you need anything else.",
-        },
+        { id: prev.length + 1, sender: "doctor", text: nextReply },
       ]);
-    }, 600);
+
+      if (replyIndex + 1 < doctorReplies.length) {
+        setReplyIndex((prev) => prev + 1);
+      }
+    }, 2000);
   };
 
   return (
     <div className="mt-10 flex bg-gray-100 min-h-screen">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <div className="flex-1 ml-0 md:ml-72 p-4 flex flex-col">
-        {/* TopBar */}
         <TopBar />
 
         <div className="mt-6 flex flex-col h-[calc(100vh-120px)]">
-          {/* Header */}
-          <div className="bg-white shadow rounded p-4 text-lg font-bold text-teal-600">
+          <div className="flex flex-row bg-white shadow rounded p-4 text-lg font-bold text-teal-600">
             Live Chat Support
           </div>
 
-          {/* Chat Window */}
-          <div className="flex-1 bg-white mt-4 p-4 rounded shadow overflow-y-auto">
+          {/* Chat window */}
+          <div
+            ref={chatWindowRef}
+            className="flex-1 bg-white mt-4 p-4 rounded shadow overflow-y-auto scroll-smooth"
+          >
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -71,10 +85,10 @@ export default function Chat() {
                 }`}
               >
                 <div
-                  className={`max-w-xs p-3 rounded-lg ${
+                  className={`max-w-xs p-3 rounded-lg transition-all duration-200 ${
                     msg.sender === "user"
                       ? "bg-teal-600 text-white"
-                      : "bg-gray-200 text-gray-800"
+                      : "bg-gray-200 text-black"
                   }`}
                 >
                   {msg.text}
@@ -84,7 +98,7 @@ export default function Chat() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* Input Area */}
+          {/* Input */}
           <div className="mt-4 flex gap-2">
             <input
               type="text"
@@ -97,7 +111,7 @@ export default function Chat() {
 
             <button
               onClick={sendMessage}
-              className="px-4 bg-teal-600 text-white rounded-lg"
+              className="px-4 bg-teal-600 text-white rounded-lg transition-all duration-200 hover:bg-teal-700"
             >
               Send
             </button>

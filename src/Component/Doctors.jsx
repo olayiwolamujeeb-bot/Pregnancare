@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import { FaStar, FaRegStar, FaComments } from "react-icons/fa";
@@ -7,17 +7,17 @@ import { Link } from "react-router-dom";
 const doctorsData = [
   {
     id: 1,
-    name: "Dr. Faridah",
+    name: "Dr. Fareed Habeeb",
     specialty: "Obstetrician & Gynecologist",
-    image: "/D1.jpg",
+    image: "/DHS 1.jpg",
     rating: 4,
     online: true,
   },
   {
     id: 2,
-    name: "Dr. Deborah",
+    name: "Dr. Deborah Alade",
     specialty: "Pediatrician",
-    image: "/D2.jpg",
+    image: "/MD1.jpg",
     rating: 5,
     online: false,
   },
@@ -25,13 +25,13 @@ const doctorsData = [
     id: 3,
     name: "Dr. Emmanuel Opeyemi",
     specialty: "Cardiologist",
-    image: "/D3.jpg",
+    image: "/S4.jpg",
     rating: 4,
     online: true,
   },
   {
     id: 4,
-    name: "Dr. Aisha Bello",
+    name: "Dr. Mayowa Oladipo",
     specialty: "Dermatologist",
     image: "/D4.jpg",
     rating: 3,
@@ -41,15 +41,15 @@ const doctorsData = [
     id: 5,
     name: "Dr. Grace Nwankwo",
     specialty: "Neurologist",
-    image: "/D5.jpg",
+    image: "/MD6.jpg",
     rating: 5,
     online: false,
   },
   {
     id: 6,
-    name: "Dr. Grace Nwankwo",
+    name: "Dr. Mercy Ajayi",
     specialty: "Neurologist",
-    image: "/FemaleDoc.jpg",
+    image: "/MD3.jpg",
     rating: 5,
     online: true,
   },
@@ -64,6 +64,7 @@ export default function Doctors() {
       doc.name.toLowerCase().includes(search.toLowerCase()) ||
       doc.specialty.toLowerCase().includes(search.toLowerCase())
   );
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
     <div className="mt-10 flex min-h-screen bg-gray-100 flex-col">
@@ -125,7 +126,7 @@ export default function Doctors() {
                   </div>
 
                   {/* Chat Button */}
-                  <Link to="/chat">
+                  <Link to="/DoctorChat">
                   <button className="mt-4 flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-md hover:bg-teal-700 transition">
                     <FaComments /> Chat
                   </button> </Link>

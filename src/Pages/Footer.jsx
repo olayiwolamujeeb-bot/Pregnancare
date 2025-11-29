@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   const location = useLocation();
-  const hideFooter = location.pathname.startsWith("/dashboard");
-  if (hideFooter) return null;
+  const hideFooter = location.pathname.startsWith("/dashboard"); 
+    if (hideFooter) return null;
 
   return (
     <footer className="bg-black text-white border-t">

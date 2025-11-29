@@ -1,51 +1,43 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
-import {LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,} from "recharts";
+import {LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
+} from "recharts";
 
 export default function FetalMonitoring() {
   const [kickCount, setKickCount] = useState(0);
-  const [contractionActive, setContractionActive] = useState(false);
-  const [contractionStart, setContractionStart] = useState(null);
-  const [contractionDuration, setContractionDuration] = useState(0);
 
-  
+  // Heart rate data
   const [fhrData, setFhrData] = useState([]);
+
+  // Delivery Date
+  const [deliveryDate, setDeliveryDate] = useState("2025-08-20");
+  const [daysLeft, setDaysLeft] = useState(0);
+
+  // Calculate days left to delivery
+  useEffect(() => {
+    const today = new Date();
+    const edd = new Date(deliveryDate);
+    const diff = edd - today;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    setDaysLeft(days);
+  }, [deliveryDate]);
+
+  // Generate heart rate data
   useEffect(() => {
     const interval = setInterval(() => {
       setFhrData((prev) => [
         ...prev.slice(-20),
-        { time: new Date().toLocaleTimeString().slice(3, 8), fhr: 120 + Math.random(20) * 3 },
+        { 
+          time: new Date().toLocaleTimeString().slice(3, 8),
+          fhr: 120 + Math.random() * 30
+        },
       ]);
     }, 2000);
 
     return () => clearInterval(interval);
   }, []);
 
-  function toggleContraction() {
-    if (!contractionActive) {
-      setContractionStart(Date.now());
-    } else {
-      setContractionDuration(Math.round((Date.now() - contractionStart) / 1000));
-    }
-    setContractionActive(!contractionActive);
-  }
-
-  // Determine fetal heart rate status
-  const latestFHR = fhrData.length ? fhrData[fhrData.length - 1].fhr : 0;
-  const status =
-    latestFHR < 110
-      ? "Critical"
-      : latestFHR > 160
-      ? "Warning"
-      : "Normal";
-
-  const statusColor =
-    status === "Normal"
-      ? "text-green-600"
-      : status === "Warning"
-      ? "text-yellow-600"
-      : "text-red-600";
   return (
     <div className="flex">
       <Sidebar />
@@ -54,22 +46,10 @@ export default function FetalMonitoring() {
         <TopBar />
 
         <div className="p-6 mt-10">
-          <h1 className="text-2xl font-bold text-teal-600">
-            Fetal Monitoring
-          </h1>
+          <h1 className="text-2xl font-bold text-teal-600">Fetal Monitoring</h1>
           <p className="text-black font-semibold italic mt-1">
-            Foetal heart rate (FHR) monitoring <br/> maternal kick counting
-            to ensure baby’s well-being.
+            Maternal kick counting, delivery countdown and fetal heart monitoring.
           </p>
-
-        {/* STATUS CARD */}
-          <div className="mt-6 bg-white rounded-xl p-5 shadow-sm border">
-            <p className="text-black font-bold text-lg">Fetal Heart Rate Status</p>
-            <h2 className={`text-3xl font-bold mt-1 ${statusColor}`}>
-              {latestFHR ? `${latestFHR.toFixed(0)} bpm` : "--"}
-            </h2>
-            <p className={`font-medium ${statusColor}`}>{status}</p>
-          </div>
 
           {/* CHART */}
           <div className="mt-8 bg-white p-5 shadow-sm rounded-xl border">
@@ -87,7 +67,7 @@ export default function FetalMonitoring() {
                   <Line
                     type="monotone"
                     dataKey="fhr"
-                    stroke="teal-600" 
+                    stroke="teal"
                     strokeWidth={3}
                     dot={false}
                   />
@@ -96,7 +76,7 @@ export default function FetalMonitoring() {
             </div>
           </div>
 
-          {/* KICK COUNTER & CONTRACTIONS */}
+          {/* GRID SECTION */}
           <div className="grid md:grid-cols-2 gap-6 mt-10">
 
             {/* KICK COUNTER */}
@@ -125,40 +105,29 @@ export default function FetalMonitoring() {
               </button>
             </div>
 
-            {/* CONTRACTION TIMER */}
+            {/* DELIVERY DAY COUNTDOWN */}
             <div className="bg-white p-5 rounded-xl shadow-sm border">
               <h3 className="text-xl font-semibold text-slate-800">
-                Contraction Timer
+                Delivery Countdown
               </h3>
-              <p className="text-slate-500 mt-1">Monitor contraction patterns</p>
+              <p className="text-slate-500 mt-1">Estimated Due Date (EDD)</p>
 
-              <h1 className="text-5xl font-bold text-slate-800 mt-3">
-                {contractionActive
-                  ? `${Math.round((Date.now() - contractionStart) / 1000)}s`
-                  : `${contractionDuration}s`}
+              <input
+                type="date"
+                value={deliveryDate}
+                onChange={(e) => setDeliveryDate(e.target.value)}
+                className="mt-3 p-2 border rounded-lg w-full focus:outline-teal-600"
+              />
+
+              <h1 className="text-5xl font-bold text-teal-700 mt-5">
+                {daysLeft > 0 ? `${daysLeft} Days` : "Due!"}
               </h1>
 
-              <button
-                onClick={toggleContraction}
-                className={`mt-4 w-full py-2 rounded-lg text-white transition
-                  ${
-                    contractionActive
-                      ? "bg-red-600 hover:bg-red-700"
-                      : "bg-teal-700 hover:bg-teal-800"
-                  }`}
-              >
-                {contractionActive ? "Stop Contraction" : "Start Contraction"}
-              </button>
-
-              <button
-                onClick={() => {
-                  setContractionDuration(0);
-                  setContractionActive(false);
-                }}
-                className="mt-3 w-full py-2 rounded-lg bg-gray-200 text-black hover:bg-gray-300 transition"
-              >
-                Reset
-              </button>
+              <p className="mt-2 text-slate-500">
+                {daysLeft > 0
+                  ? "Your delivery day is approaching. Stay healthy!"
+                  : "Congratulations 🎉 Your due date is here!"}
+              </p>
             </div>
 
           </div>

@@ -12,13 +12,13 @@ import AboutUsPage from "./Pages/About";
 import Appointments from "./Component/Appointment";
 import Contact from "./Pages/Contact";
 import News from "./Pages/News";
-import Services from "./Component/Service";
 import Clinicians from "./Component/Doctors";
 import FetalMonitoring from "./Component/FoetalMonitoring";
 import EmergencyAlerts from "./Component/Emergency";
 import AppointmentPage from "./Component/Appointment";
 import Chat from "./Component/Chatbox";
 import Prescription from "./Component/Prescription";
+import ChatPage from "./Component/Doctorchat";
 
 
 const App = () => {
@@ -36,13 +36,13 @@ const App = () => {
         <Route path="/dashboard/appointment" element={<Appointments />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/News" element={<News />} />
-        <Route path="/service" element={<Services />} />
         <Route path="/dashboard/clinicians" element={<Clinicians />} />
         <Route path="/dashboard/fetal-monitoring" element={<FetalMonitoring />} />
         <Route path="/dashboard/emergency" element={<EmergencyAlerts />} />
         <Route path="/dashboard/appointments" element={<AppointmentPage />} />
         <Route path="/dashboard/chat" element={<Chat />} />
         <Route path="/dashboard/prescriptions" element={<Prescription />} />
+        <Route path="/DoctorChat" element={<ChatPage />} />
       </Routes>
       <Footer />
     </>
