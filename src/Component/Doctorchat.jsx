@@ -35,7 +35,7 @@ export default function ChatPage() {
 
   const [input, setInput] = useState("");
 
-  // 🎤 AUDIO RECORDING
+  // My Audio
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -69,9 +69,9 @@ export default function ChatPage() {
   const doctorAutoReply = () => {
     setTimeout(() => {
       const reply = {
-        id: messages.length + 2,
+        id: messages.length + 8,
         sender: "doctor",
-        text: "Thank you for the message, I’m checking it now.",
+        text: "Good Morning ma, Hope you are doing well",
         type: "text",
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
@@ -83,18 +83,15 @@ export default function ChatPage() {
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
       mediaRecorderRef.current = new MediaRecorder(stream);
       audioChunksRef.current = [];
-
       mediaRecorderRef.current.ondataavailable = (e) => {
         audioChunksRef.current.push(e.data);
       };
 
       mediaRecorderRef.current.onstop = () => {
-        const blob = new Blob(audioChunksRef.current, { type: "audio/mp3" });
-        const url = URL.createObjectURL(blob);
-
+        const record = new Record(audioChunksRef.current, { type: "audio/mp3" });
+        const url = URL.createObjectURL(record);
         addMessage({ type: "audio", audio: url });
       };
 
@@ -110,7 +107,7 @@ export default function ChatPage() {
     setIsRecording(false);
   };
 
-  // 📁 FILE UPLOAD
+  // File Upload
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;

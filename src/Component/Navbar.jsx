@@ -30,7 +30,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation */}
-        <ul className="flex items-center gap-10 text-white font-semibold">
+        <ul className="collapsible-icon flex items-center gap-10 text-white font-semibold">
           <Link to="/">
             <li className="hover:text-teal-600 transition duration-200 hover:scale-105">
               Home
