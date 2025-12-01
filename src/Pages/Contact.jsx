@@ -1,13 +1,15 @@
 import React from 'react';
 import { motion } from "framer-motion";
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram,} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+
 
 const Contact = () => {
   return (
     <div>
       {/* HERO SECTION */}
       <section
-        className="mt-2 bg-white relative h-[10vh] flex justify-center items-center">
+        className="mt-20 bg-white relative h-[10vh] flex justify-center items-center">
         <div className="absolute inset-0"></div>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -96,7 +98,7 @@ const Contact = () => {
             <div className="flex gap-5 text-2xl text-teal-600">
               <FaFacebook className="hover:text-blue-700 cursor-pointer" />
               <FaInstagram className="hover:text-pink-600 cursor-pointer" />
-              <FaTwitter className="hover:text-blue-500 cursor-pointer" />
+              <FaXTwitter className="hover:text-blue-500 cursor-pointer" />
             </div>
           </div>
         </motion.div>

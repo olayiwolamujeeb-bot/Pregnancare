@@ -1,48 +1,142 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FaRegClock } from "react-icons/fa";
 
-export default function WhatWeOffer() {
-  const [whoNews, setWhoNews] = useState([]);
+export default function LatestNews() {
+  const [apiNews, setApiNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const API_KEY = "957f15058c4f7bc943ca4fd43433e877";
+
+  const fallbackNews = [
+    {
+      id: 1,
+      img: "/Drug2.jpg",
+      date: "October 30, 2025",
+      title: "2025 Best Nigeria Hospitals",
+      text: "Explore the leading hospitals recognized for outstanding medical service and patient care.",
+    },
+    {
+      id: 2,
+      img: "/Drug1.jpg",
+      date: "November 18, 2025",
+      title: "Are Drugs the Best Treatment?",
+      text: "A detailed insight into whether medications remain the most effective treatment method.",
+    },
+    {
+      id: 3,
+      img: "/Stet.jpg",
+      date: "November 28, 2025",
+      title: "New Heart Monitoring Methods",
+      text: "Innovative technologies offering patients improved heart monitoring accuracy.",
+    },
+  ];
 
   useEffect(() => {
-    const WHO_FEED = "https://www.who.int/feeds/entity/csr/don/en/rss.xml";
-    fetch(`https://api.rss2json.com/v1/api.json?rss_url=${WHO_FEED}`)
-      .then(res => res.json())
-      .then(data => {
-        setWhoNews(data.items.slice(0, 3)); 
-      })
-      .catch(err => console.error("WHO News Error:", err));
+    async function loadNews() {
+      try {
+        const res = await fetch(
+          `https://gnews.io/api/v4/top-headlines?category=health&lang=en&country=us&max=6&apikey=${API_KEY}`
+        );
+
+        const data = await res.json();
+
+        if (data.articles && data.articles.length > 0) {
+          const mapped = data.articles.map((item, index) => ({
+            id: index + 1,
+            img: item.image || "/news1.jpg",
+            date: new Date(item.publishedAt).toDateString(),
+            title: item.title,
+            text: item.description || "Click to read the full health article.",
+            link: item.url,
+          }));
+
+          setApiNews(mapped);
+        } else {
+          setError(true);
+        }
+      } catch (err) {
+        console.log("API error:", err);
+        setError(true);
+      }
+
+      setLoading(false);
+    }
+
+    loadNews();
   }, []);
+
+  const newsToShow =
+    !loading && !error && apiNews.length > 0 ? apiNews : fallbackNews;
+
   return (
-    <section className="w-full bg-white py-10 px-5">
-      <div className="max-w-6xl mx-auto"> 
-        {/*HEADER*/}
-        <div className="text-center mb-16">
-          <p className="text-lg text-teal-600 font-bold">From WHO</p> 
-          <h2 className="text-2xl md:text-5xl font-extrabold text-teal-700 gap-y-6">
-            Latest Health News <br/> from WHO
-          </h2>
-        </div>  
-        {/*NEWS GRID*/}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {whoNews.map((news, index) => ( 
-            <div key={index} className="bg-gray-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition">
-              <h3 className="text-xl font-semibold mb-2">{news.title}</h3>
-              <p className="text-sm text-gray-600 mb-4"> 
-                {new Date(news.pubDate).toLocaleDateString()}
-              </p>
-              <p className="text-gray-700 mb-4">    
-                {news.description.replace(/<[^>]+>/g, "").slice(0, 150)}...
-              </p>
-              <a  
-                href={news.link}
-                target="_blank"
-                className="text-teal-600 hover:text-teal-800 font-semibold transition"  
-              >
-                Read Full Article →
-              </a>  
+    <section className="w-full py-20 bg-teal-100">
+
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-extrabold text-teal-800 tracking-widest">
+          LATEST NEWS
+        </h2>
+        <div className="w-20 h-1 bg-[#0fada0] mx-auto my-3 rounded-full"></div>
+        <p className="text-black font-semibold max-w-3xl mx-auto text-lg leading-relaxed">
+          Stay informed with the latest developments in healthcare, maternal wellness, and medical advancements curated by LeemahCare.
+        </p>
+      </div>
+
+      {/* News Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 px-6 md:px-20">
+        {newsToShow.map((item, i) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: i * 0.15 }}
+            viewport={{ once: true }}
+            className="bg-white border border-[#0fada0]/10 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group"
+          >
+
+            {/* Image */}
+            <img
+              src={item.img}
+              alt={item.title}
+              className="w-full h-62 object-cover group-hover:scale-105 transition duration-700"
+            />
+
+            {/* Content */}
+            <div className="p-6">
+              <div className="flex items-center gap-2 text-[#0a726a]/70 text-sm">
+                <FaRegClock className="text-[#0fada0]" />
+                <span>{item.date}</span>
+              </div>
+
+              <h3 className="text-xl font-bold text-black mt-3">{item.title}</h3>
+
+              <p className="text-black mt-2 leading-relaxed">{item.text}</p>
+
+              {item.link && (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  className="mt-4 inline-block text-[#0fada0] hover:text-[#0a726a] font-semibold transition"
+                >
+                  Read Full Article →
+                </a>
+              )}
             </div>
-          ))} 
-        </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Bottom Button */}
+      <div className="text-center mt-16">
+        <a
+          href={`https://gnews.io/api/v4/top-headlines?category=health&lang=en&country=us&apikey=${API_KEY}`}
+          target="_blank"
+          className="px-10 py-4 bg-[#0fada0] hover:bg-[#0a726a] text-white font-semibold rounded-2xl shadow-lg transition-all duration-300"
+        >
+          Read More News
+        </a>
       </div>
     </section>
   );

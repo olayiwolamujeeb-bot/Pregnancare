@@ -1,5 +1,6 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaWhatsapp } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
@@ -45,12 +46,7 @@ const Navbar = () => {
               Health News
             </li>
           </Link>
-          <Link to="/service">
-            <li className="hover:text-teal-600 transition duration-200 hover:scale-105">
-              Service
-            </li>
-          </Link>
-        </ul>
+          </ul>
 
         {/* Search + Socials */}
         <div className="flex items-center gap-5">
@@ -68,7 +64,7 @@ const Navbar = () => {
           {/* Social Media Icons */}
           <div className="flex items-center gap-3 text-teal-300">
             <FaFacebookF className="cursor-pointer hover:text-gray-900 hover:scale-110 transition" />
-            <FaTwitter className="cursor-pointer hover:text-gray-900 hover:scale-110 transition" />
+            <FaXTwitter  className="cursor-pointer hover:text-gray-900 hover:scale-110 transition" />
             <FaWhatsapp className="cursor-pointer hover:text-gray-900 hover:scale-110 transition" />
           </div>
         </div>

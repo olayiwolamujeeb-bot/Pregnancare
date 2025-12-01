@@ -26,15 +26,6 @@ export default function Emergency() {
             Emergency Dispatch
           </h1>
 
-          {/* Image Section */}
-          <div className="w-full h-100 bg-gray-200 rounded-lg overflow-hidden mb-6">
-            <img
-              src="/Ambu.jpg"
-              className="w-full h-full object-cover"
-              alt="Emergency"
-            />
-          </div>
-
           {/* Driver Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {drivers.map((d) => (

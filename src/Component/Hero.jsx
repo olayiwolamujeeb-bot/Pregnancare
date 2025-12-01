@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { FaArrowRight, FaStethoscope, FaHeartbeat, FaUserMd, FaBaby, FaTooth, FaHeart } from "react-icons/fa";
+import { motion }  from "framer-motion";
 import { Link } from "react-router-dom";
 import TeamGrid from "./TeamGrid";
 import Contact from "../Pages/Contact";
@@ -37,26 +38,45 @@ const Hero = () => {
 
   return (
     <div className="w-full">
-      {/* HERO SECTION */}
-      <section className="relative w-full h-[150vh] md:h-[120vh] flex items-center justify-center overflow-hidden">
-        {/* Background slideshow */}
-        <div className="absolute inset-0 w-full h-full">
-          <img
-            src="/Mothercare.jpeg"
-            className="absolute w-full h-full object-cover animate-slideImage1"
-            alt="Mothercare"
-          />
-          <img
-            src="/Delivery.jpeg"
-            className="absolute w-full h-full object-cover animate-slideImage2"
-            alt="Delivery"
-          />
-        </div>
+    {/* HERO SECTION */}
+    <section className="relative w-full h-[150vh] md:h-[120vh] flex items-center justify-center overflow-hidden">
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
 
-        {/* Dark overlay */}
+    {/* Image 1 */}
+      <motion.img
+        src="/Mothercare.jpeg"
+        alt="Mothercare"
+        className="absolute w-full h-full object-cover"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 1, 1, 0] }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          times: [0, 0.2, 0.7, 1],
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Image 2 */}
+      <motion.img
+        src="/Delivery.jpeg"
+        alt="Delivery"
+        className="absolute w-full h-full object-cover"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0, 1, 1, 0] }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          times: [0, 0.3, 0.5, 0.8, 1],
+          ease: "easeInOut",
+        }}
+      />
+    </div>
+ 
+      {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/40"></div>
 
-        {/* Hero Text */}
+      {/* Hero Text */}
         <div className="relative z-30 text-center px-6 max-w-3xl animate-fadeInUp mt-28 md:mt-20">
           <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-md">
             Modern Healthcare,

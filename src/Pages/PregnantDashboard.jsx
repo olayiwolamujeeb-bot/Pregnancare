@@ -11,7 +11,6 @@ import WelcomeModal from '../Component/Welcomebar.jsx';
 
 const PregnancyDashboard = () => {
   const navigate = useNavigate();
-
   const [activeView, setActiveView] = useState('weekProgress');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showWelcome, setShowWelcome] = useState(true);
